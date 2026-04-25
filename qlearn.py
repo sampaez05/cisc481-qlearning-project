@@ -47,42 +47,7 @@ LEARNING_RATE = 0.8
 DISCOUNT_FACTOR = 0.95
 EXPLORATION_PROB = 0.4 # epsilon value
 EXPLOITATION_PROB = 0.6 # aka 1-epsilon 
-EPOCHS = 1000
-
-
-'''
-def movement(action, state, ncols):
-    """
-    Parameters: 
-        action : int representing which way to move
-        state : int representing the current location by doing current_row * ncols + current_col, counting from 0)
-
-    Return:
-        Resulting state?
-    """
-    current_row = state // ncols # integer division dividing the state int by the number of columns
-    current_col = state % ncols # state int modulo number of columns
-    # move left when not on left edge 
-    if action == 0 and current_col > 0:
-        current_col = current_col - 1
-    # move down when not on bottom edge
-    elif action == 1 and current_row < 3:
-        current_row = current_row + 1
-    # move right when not on right edge
-    elif action == 2 and current_col < 3:
-        current_col = current_col + 1
-    # move up when not on upper edge
-    elif action == 3 and current_row > 0:
-        current_row = current_row - 1
-    # invalid input
-    else:
-        print("Invalid input for movement")
-    print("Your new state location is: ", current_row*ncols + current_col)
-    return (current_row*ncols + current_col)
-
-# test that movement returns
-movement(1,0,4)
-'''
+EPOCHS = 3000
 
 # learn through iterations (Q-Learning)
 def learn(map):
@@ -93,59 +58,76 @@ def learn(map):
 
     # make Q-table and initialize all values to 0
     Q = [[0 for _ in range(n_actions)] for _ in range(n_states)]
-    print("the Q table at the start of learning is: ", Q)
-
+    epsilon = 1.0
+    epsilon_min = 0.05
+    epsilon_decay = 0.995
+    stable_count = 0
+    STABLE_REQUIRED = 10
+    global_max_change = 0
+    max_change = 0
+    successes = 0
     for episode in range (EPOCHS):
+        episode_max_change = 0
+        episode_reward = 0
         state,_ = map.reset()
-        max_change = 0
+        global_max_change = max(global_max_change, max_change)
         THRESHOLD = 1e-4
-        stable_count = 0
-        STABLE_REQUIRED = 10
         done = False
         while not done:
             # epsilon greedy
-            if random.random() < EXPLORATION_PROB:
+            if random.random() < epsilon:
                 action = random.randint(0,n_actions-1)
             else:
-                action = Q[state].index(max(Q[state]))
-            #next_state = movement(action,current_state,n_cols)
+                #action = Q[state].index(max(Q[state]))
+                best_actions = [i for i, q in enumerate(Q[state]) if q == max(Q[state])]
+                action = random.choice(best_actions)
             next_state, reward, terminated, truncated, info = map.step(action)
 
             done = terminated or truncated
             
             old_value = Q[state][action]
             # Q-learning update
-            Q[state][action] = Q[state][action] + LEARNING_RATE * (
-                reward + DISCOUNT_FACTOR * max(Q[next_state]) - Q[state][action]
-            )
+            target = reward if terminated else reward + DISCOUNT_FACTOR * max(Q[next_state])
+            
+            episode_reward += reward
+            Q[state][action] += LEARNING_RATE * (target - Q[state][action])
             change = abs(Q[state][action] - old_value)
 
             state = next_state
 
             max_change = max(max_change, change)
+        if terminated and reward > 0:
+            successes += 1
+
+        epsilon = max(epsilon_min, epsilon * epsilon_decay)
         if max_change < THRESHOLD:
             stable_count += 1
         else:
             stable_count = 0
-        if stable_count >= STABLE_REQUIRED:
+        if episode > 500 and global_max_change < THRESHOLD:
+            print(f"Converged at episode {episode}")   
             break
-
-    print(f"Converged at episode {episode}")      
-    print("the Q table at the end of learning is: ", Q)
+    print("Success rate:", successes / EPOCHS)
+    print("the Q table at the end of learning is: ", Q, "\n")
     return Q
 
 # default 4x4 slippery map
+print("default map")
 learn(default_env)
 
 # randomly generated 4x4 slippery map
+print("stochastoc_4x4_env map")
 learn(stochastoc_4x4_env)
 
 # randomly generated 8x8 slippery map
-#learn(stochastoc_8x8_env)
+print("stochastoc_8x8_env map")
+learn(stochastoc_8x8_env)
 
 # randomly generated 4x4 non-slippery map
+print("deterministic_4x4_env map")
 learn(deterministic_4x4_env)
 
 # randomly generated 8x8 non-slippery map
-#learn(deterministic_8x8_env)
+print("deterministic_8x8_env map")
+learn(deterministic_8x8_env)
 
