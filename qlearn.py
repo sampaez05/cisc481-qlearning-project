@@ -15,7 +15,7 @@ default_env = gym.make("FrozenLake-v1", render_mode="None",
 stochastoc_4x4_env = gym.make("FrozenLake-v1", render_mode="None",
     desc=generate_random_map(size=4),
     is_slippery=True,
-    success_rate=0.75, # should this be .8 or .75?
+    success_rate=0.75, 
     reward_schedule=(10, -10, 0)
 )
 
@@ -23,7 +23,7 @@ stochastoc_4x4_env = gym.make("FrozenLake-v1", render_mode="None",
 stochastoc_8x8_env = gym.make("FrozenLake-v1", render_mode="None",
     desc=generate_random_map(size=8),
     is_slippery=True,
-    success_rate=0.75, # should this be .8 or .75?
+    success_rate=0.75, 
     reward_schedule=(10, -10, 0)
 )
 
@@ -31,7 +31,7 @@ stochastoc_8x8_env = gym.make("FrozenLake-v1", render_mode="None",
 deterministic_4x4_env = gym.make("FrozenLake-v1", render_mode="None",
     desc=generate_random_map(size=4),
     is_slippery=False,
-    success_rate=0.75, # should this be .8 or .75?
+    success_rate=0.75, 
     reward_schedule=(10, -10, 0)
 )
 
@@ -39,13 +39,14 @@ deterministic_4x4_env = gym.make("FrozenLake-v1", render_mode="None",
 deterministic_8x8_env = gym.make("FrozenLake-v1", render_mode="None",
     desc=generate_random_map(size=8),
     is_slippery=False,
-    success_rate=0.75, # should this be .8 or .75?
+    success_rate=0.75, 
     reward_schedule=(10, -10, 0)
 )
 
 LEARNING_RATE = 0.6 #alpha
 DISCOUNT_FACTOR = 0.95
 EPOCHS = 5000
+
 
 # learn through iterations (Q-Learning)
 def learn(map):
@@ -88,8 +89,8 @@ def learn(map):
 
             state = next_state
             
-        if terminated and reward > 0:
-            successes += 1
+            if terminated and reward > 0:
+                successes += 1
 
         epsilon = max(epsilon_min, epsilon * epsilon_decay)
         
@@ -109,6 +110,7 @@ def learn(map):
     print("the Q table at the end of learning is: ", Q, "\n")
     return Q
 
+    
 # default 4x4 slippery map
 print("default map")
 learn(default_env)
@@ -129,3 +131,97 @@ learn(deterministic_4x4_env)
 print("deterministic_8x8_env map")
 learn(deterministic_8x8_env)
 
+
+'''
+# Tests for part b of the assignment:
+# randomly generated 4x4 slippery map
+print("stochastoc_4x4_env map")
+learn(stochastoc_4x4_env)
+
+# randomly generated 8x8 slippery map
+print("stochastoc_8x8_env map")
+learn(stochastoc_8x8_env)
+
+# randomly generated 4x4 slippery map
+print("stochastoc_4x4_env map")
+learn(stochastoc_4x4_env)
+
+# randomly generated 8x8 slippery map
+print("stochastoc_8x8_env map")
+learn(stochastoc_8x8_env)
+
+# randomly generated 4x4 slippery map
+print("stochastoc_4x4_env map")
+learn(stochastoc_4x4_env)
+
+# randomly generated 8x8 slippery map
+print("stochastoc_8x8_env map")
+learn(stochastoc_8x8_env)
+
+# randomly generated 4x4 slippery map
+print("stochastoc_4x4_env map")
+learn(stochastoc_4x4_env)
+
+# randomly generated 8x8 slippery map
+print("stochastoc_8x8_env map")
+learn(stochastoc_8x8_env)
+
+# randomly generated 4x4 slippery map
+print("stochastoc_4x4_env map")
+learn(stochastoc_4x4_env)
+
+# randomly generated 8x8 slippery map
+print("stochastoc_8x8_env map")
+learn(stochastoc_8x8_env)
+
+# randomly generated 4x4 slippery map
+print("stochastoc_4x4_env map")
+learn(stochastoc_4x4_env)
+
+# randomly generated 8x8 slippery map
+print("stochastoc_8x8_env map")
+learn(stochastoc_8x8_env)
+'''
+
+'''
+# Tests for part b of the assignment:
+# randomly generated 4x4 non-slippery map
+print("deterministic_4x4_env map")
+learn(deterministic_4x4_env)
+
+# randomly generated 8x8 non-slippery map
+print("deterministic_8x8_env map")
+learn(deterministic_8x8_env)
+
+# randomly generated 4x4 non-slippery map
+print("deterministic_4x4_env map")
+learn(deterministic_4x4_env)
+
+# randomly generated 8x8 non-slippery map
+print("deterministic_8x8_env map")
+learn(deterministic_8x8_env)
+
+# randomly generated 4x4 non-slippery map
+print("deterministic_4x4_env map")
+learn(deterministic_4x4_env)
+
+# randomly generated 8x8 non-slippery map
+print("deterministic_8x8_env map")
+learn(deterministic_8x8_env)
+
+# randomly generated 4x4 non-slippery map
+print("deterministic_4x4_env map")
+learn(deterministic_4x4_env)
+
+# randomly generated 8x8 non-slippery map
+print("deterministic_8x8_env map")
+learn(deterministic_8x8_env)
+
+# randomly generated 4x4 non-slippery map
+print("deterministic_4x4_env map")
+learn(deterministic_4x4_env)
+
+# randomly generated 8x8 non-slippery map
+print("deterministic_8x8_env map")
+learn(deterministic_8x8_env)
+'''
