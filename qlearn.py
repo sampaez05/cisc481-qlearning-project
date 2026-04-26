@@ -7,7 +7,7 @@ from gymnasium.envs.toy_text.frozen_lake import generate_random_map
 default_env = gym.make("FrozenLake-v1", render_mode="None",
     map_name="4x4",
     is_slippery=True,
-    success_rate=0.8,
+    success_rate=0.75,
     reward_schedule=(10, -10, 0)
     )
 

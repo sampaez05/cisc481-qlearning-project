@@ -21,3 +21,19 @@ and 8x8 environment with p=¾ ? (you should report average and standard deviatio
 E. [10 points] How did you determine that you have “learned” a stochastic environment in
 part D?
     I considered it to be a learned environment when the Q table stablized after at least 500 episodes, with at least 300 of which were successful
+
+Some thought questions: (Answer for extra credit (up to 10 points)
+(i) Compare two different exploration methods (e.g. epsilon-greedy, state counting,
+Boltzman exploration, etc.)
+    In Epsilon-Greedy, there is a probability based on the epsilon value that the agent will take a new action versus taking the best known action. Typically this value decays over time, so there is high exploration early and then later there is higher exploitation. Boltzman exploration uses probabilities based on the Q-values instead. Boltzman exploration typically takes good actions and consideres how much worse a bad action is before taking it, unlike epsilon-greedy where the chance of taking a bad action is randomized. 
+
+(ii) What is the effect of changing the probability of correct action? Does the agent
+learn more quickly when p is larger?
+    The higher the probability, the more quickly the agent learns. This is especially true for the stochastic maps because the larger the probability of correct action, the more deterministic the map becomes. Not much of a difference is present for the already deterministic maps. 
+
+(iii) What is the effect of changing the reward structure? Does the agent learn more
+efficiently with higher or lower rewards? What about a (small) negative living
+reward
+    Higher rewards make the agent learn faster in comparison to lower rewards. Having a negative living reward makes the agent began to take more efficient paths, changing the agents' preferences. 
+
+
