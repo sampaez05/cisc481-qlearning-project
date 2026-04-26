@@ -43,7 +43,7 @@ deterministic_8x8_env = gym.make("FrozenLake-v1", render_mode="None",
     reward_schedule=(10, -10, 0)
 )
 
-LEARNING_RATE = 0.8
+LEARNING_RATE = 0.6 #alpha
 DISCOUNT_FACTOR = 0.95
 EPOCHS = 5000
 
@@ -54,9 +54,9 @@ def learn(map):
 
     # make Q-table and initialize all values to 0
     Q = [[0 for _ in range(n_actions)] for _ in range(n_states)]
-    epsilon = 1.0
-    epsilon_min = 0.05
-    epsilon_decay = 0.995
+    epsilon = 1 #exploration rate 
+    epsilon_min = 0.1
+    epsilon_decay = 0.999
     stable_count = 0
     STABLE_REQUIRED = 10
     successes = 0
@@ -99,7 +99,6 @@ def learn(map):
             stable_count = 0
     
         if stable_count >= STABLE_REQUIRED and episode>500 and successes>300:
-        #if episode>500 and successes>250:
             converged = True
             print(f"Converged at episode {episode}")
             break
